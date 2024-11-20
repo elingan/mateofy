@@ -1,5 +1,5 @@
 import SpotifyWeb from '@/components/spotify-web'
-import { SignedIn, SignedOut, SignIn, SignInButton, UserButton } from '@clerk/nextjs'
+import { SignedIn, SignedOut, SignIn } from '@clerk/nextjs'
 // import Image from "next/image";
 
 export default async function Home() {

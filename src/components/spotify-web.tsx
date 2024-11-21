@@ -6,6 +6,10 @@ export default function SpotifyWeb() {
 
   useEffect(() => {
     console.log('Spotify Web')
+
+    
+
+
   })
 
   return (

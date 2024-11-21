@@ -1,9 +1,8 @@
 import { auth } from '@clerk/nextjs/server'
-import { log } from 'console'
 import { redirect } from 'next/navigation'
 
 
-async function fetchSpotifyAPI(endpoint: string, method: string, accessToken: string, body: any) {
+async function fetchSpotifyAPI(endpoint: string, method: string, accessToken: string) {
   const url = `https://api.spotify.com/${endpoint}`
   const response = await fetch(url, {
     method,
@@ -48,7 +47,7 @@ export async function GET() {
     const accessToken = await getAccessToken()
     console.log(accessToken)
     const endpoint = 'v1/me/top/tracks?time_range=long_term&limit=5'
-    const spotifyResponse = await fetchSpotifyAPI(endpoint, 'GET', accessToken, {})
+    const spotifyResponse = await fetchSpotifyAPI(endpoint, 'GET', accessToken)
     console.log('spotifyResponse', spotifyResponse)
   } catch (error) {
     console.error(error)

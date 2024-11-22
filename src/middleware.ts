@@ -1,6 +1,34 @@
-import { clerkMiddleware } from "@clerk/nextjs/server"
+// import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
+import { NextRequest, NextResponse } from 'next/server'
 
-export default clerkMiddleware()
+// const isPublicRoute = createRouteMatcher(['/login(.*)'])
+
+
+export function middleware(request: NextRequest,) {
+
+
+  // valida si tienen un token valido
+  const token = request.headers.get('authorization')
+  console.log(token)
+  if (!request.url.includes('/login') && !token) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+
+
+  return NextResponse.next()
+
+
+
+}
+
+// export default clerkMiddleware(async (auth, request) => {
+
+//   const { sessionId } = await auth()
+//   if (!isPublicRoute(request) && !sessionId) {
+//     return NextResponse.redirect(new URL('/login', request.url))
+//     // await auth.protect()
+//   }
+// })
 
 export const config = {
   matcher: [

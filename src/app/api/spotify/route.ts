@@ -46,7 +46,7 @@ export async function GET() {
 
     const accessToken = await getAccessToken()
     console.log(accessToken)
-    const endpoint = 'v1/me/top/tracks?time_range=long_term&limit=5'
+    const endpoint = 'v1/playlists/5KzWdtfdZEsBHLp3VrmD6B/tracks'
     const spotifyResponse = await fetchSpotifyAPI(endpoint, 'GET', accessToken)
     console.log('spotifyResponse', spotifyResponse)
   } catch (error) {

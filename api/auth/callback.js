@@ -1,4 +1,7 @@
+// Callback endpoint for Spotify OAuth2.0
 export default async function handler(request, response) {
+  console.log('/api/auth/callback')
+  
   const clientId = process.env.SPOTIFY_CLIENT_ID
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET
   const redirectUri = process.env.SPOTIFY_REDIRECT_URI

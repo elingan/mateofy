@@ -22,7 +22,7 @@ export default async function handler(request, response) {
         return {
           id: item.id,
           name: item.name,
-          // image: item.images[0]?.url,
+          // image: item.images[0]?.url,>
           uri: item.uri
         }
       })

@@ -1,14 +1,7 @@
-// const generateRandomString = (length) => {
-//   return Crypto
-//   .randomBytes(60)
-//   .toString('hex')
-//   .slice(0, length);
-// }
-
+// This file is responsible for redirecting the user to the Spotify login page
 function generateRandomString(length) {
-  var text = ''
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-
+  let text = ''
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   for (var i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length))
   }
@@ -16,6 +9,7 @@ function generateRandomString(length) {
 }
 
 export default async function handler(request, response) {
+  console.log('/api/auth/login')
   const clientId = process.env.SPOTIFY_CLIENT_ID
   const redirectUri = process.env.SPOTIFY_REDIRECT_URI
   const state = generateRandomString(16)

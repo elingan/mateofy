@@ -4,34 +4,36 @@ export default async function handler(request, response) {
     return response.status(401).redirect('/')
   }
 
-  const playlistId = request.query.playlist
-  console.log({playlistId})
+  const playlistId = process.env.SPOTIFY_PLAYLIST_ID
 
   try {
-    const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+    const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
       headers: {
         Authorization: `Bearer ${access_token}`
       }
     })
     const data = await res.json()
 
-    console.log(data)
+    let playlist = {
+      id: data.id,
+      name: data.name,
+      uri: data.uri,
+      tracks: []
+    }
 
-    let tracks = []
-
-    if (data.items) {
-      tracks = data.items.map((item) => {
+    if (data.tracks) {
+      playlist.tracks = data.tracks.items.map((item) => {
         return {
           id: item.track.id,
           name: item.track.name,
-          // artist: item.track.artists[0].name,
+          artist: item.track.artists.map((_artist) => _artist.name).join(', '),
           image: item.track.album.images[0].url,
           preview_url: item.track.preview_url,
           uri: item.track.uri
         }
       })
     }
-    return response.json(tracks)
+    return response.json(playlist)
   } catch (err) {
     console.error(err)
     return response.status(500).json({ error: 'Something went wrong' })

@@ -4,8 +4,6 @@ export default async function handler(request, response) {
     return response.status(401).redirect('/')
   }
 
-  const playlistId = process.env.SPOTIFY_PLAYLIST_ID
-
   const url = `https://api.spotify.com/v1/me/playlists`
 
   try {

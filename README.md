@@ -16,6 +16,8 @@ It is also a personal project to learn React.
 
 ## Template used
 
+- https://developer.spotify.com/documentation/web-playback-sdk/howtos/web-app-player
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

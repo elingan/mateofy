@@ -1,13 +1,16 @@
-import { useState } from 'react'
 import './index.css'
+import { useState } from 'react'
 import { useEffect } from 'react'
 import Playlist from './components/Playlist'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
-// import Playback from './components/Playback.jsx'
+import Playback from './components/Playback.jsx'
 
 function App() {
   const [token, setToken] = useState('')
+  const [playlist, setPlaylist] = useState({})
+  const [tracks, setTracks] = useState([])
+  const [track, setTrack] = useState(undefined)
 
   // useEffect(() => {
   //   async function loading() {
@@ -27,6 +30,28 @@ function App() {
     getToken()
   }, [])
 
+  useEffect(() => {
+    async function getTracks() {
+      const response = await fetch(`/api/playlist`)
+      const playlist = await response.json()
+      setPlaylist(playlist)
+      setTracks(playlist.tracks)
+    }
+    getTracks()
+  }, [token])
+
+  useEffect(() => {
+    console.log('Track:', track)
+  }, [track])
+
+  function renderPlayer() {
+    if (tracks.length > 0 && track === undefined) {
+      return <Playlist tracks={tracks} onSelect={setTrack} />
+    } else if (track !== undefined) {
+      return <Playback playlist={playlist.uri} track={track} token={token} />
+    }
+  }
+
   function renderBody() {
     if (token === '') {
       return <Login />
@@ -34,8 +59,7 @@ function App() {
       return (
         <div>
           <Navbar />
-          {/* <Playback /> */}
-          <Playlist />
+          {renderPlayer()}
         </div>
       )
     }

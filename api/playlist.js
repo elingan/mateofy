@@ -12,6 +12,10 @@ export default async function handler(request, response) {
         Authorization: `Bearer ${access_token}`
       }
     })
+    if (!res.ok) {
+      return response.status(res.status).json({ error: 'Failed to fetch playlist' })
+    }
+    
     const data = await res.json()
 
     let playlist = {

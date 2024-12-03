@@ -33,8 +33,8 @@ export default async function handler(request, response) {
   const jsonResponse = await tokenResponse.json()
 
   response.setHeader('Set-Cookie', [
-    `access_token=${jsonResponse.access_token}; Path=/; HttpOnly; Secure; SameSite=None`,
-    `refresh_token=${jsonResponse.refresh_token}; Path=/; HttpOnly; Secure; SameSite=None`,
+    `access_token=${jsonResponse.access_token}; Path=/; Secure; SameSite=None`,
+    `refresh_token=${jsonResponse.refresh_token}; Path=/; Secure; SameSite=None`,
     'miCookie=valor123; Path=/; Secure; SameSite=Strict'
   ])
 

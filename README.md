@@ -5,7 +5,7 @@ It uses the Spotify API to read the tracks, the playlist and play the songs.
 It is also a personal project to learn React.
 
 ## Features
-
+- [ ] Login with Spotify using Context
 - [ ] Play songs from a playlist
 - [ ] Pause/Play
 - [ ] Next song

@@ -1,5 +1,9 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
+import PrevIcon from './icons/prev.jsx'
+import NextIcon from './icons/next.jsx'
+import PlayIcon from './icons/play.jsx'
+import PauseIcon from './icons/pause.jsx'
 
 export default function Playback({ track, playlist, token }) {
   const [currentTrack, setCurrentTrack] = useState(undefined)
@@ -15,6 +19,8 @@ export default function Playback({ track, playlist, token }) {
     document.body.appendChild(script)
 
     window.onSpotifyWebPlaybackSDKReady = () => {
+      console.log('Spotify Web Playback SDK Ready')
+
       const spotifyPlayer = new window.Spotify.Player({
         name: 'Mateofy Web Playback',
         getOAuthToken: (cb) => {
@@ -27,17 +33,17 @@ export default function Playback({ track, playlist, token }) {
 
       spotifyPlayer.addListener('ready', async ({ device_id }) => {
         console.log('Ready with Device ID', device_id)
-        await fetch('/api/player', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            deviceId: device_id,
-            playlist: playlist,
-            track: track.uri
-          })
-        })
+        // await fetch('/api/player', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json'
+        //   },
+        //   body: JSON.stringify({
+        //     deviceId: device_id,
+        //     playlist: playlist,
+        //     track: track.uri
+        //   })
+        // })
       })
 
       spotifyPlayer.addListener('not_ready', ({ device_id }) => {
@@ -52,7 +58,7 @@ export default function Playback({ track, playlist, token }) {
         console.log('Player State Changed', state)
 
         setCurrentTrack(state.track_window.current_track)
-        setPaused(state.paused)
+        // setPaused(state.paused)
 
         spotifyPlayer?.getCurrentState().then((state) => {
           !state ? setActive(false) : setActive(true)
@@ -64,15 +70,15 @@ export default function Playback({ track, playlist, token }) {
   }, [])
 
   function handleNext() {
-    console.log('Next Track');
-    console.log(player);    
-    
+    console.log('Next Track')
+    console.log(player)
+
     player.nextTrack()
   }
 
   return (
     <div
-      className='hero min-h-screen'
+      className='hero'
       style={{
         backgroundImage: `url(${currentTrack?.album?.images[0].url})`
       }}
@@ -82,64 +88,24 @@ export default function Playback({ track, playlist, token }) {
         <div className=''>
           <h2 className='text-lg font-bold'>{currentTrack?.name}</h2>
           <p className='mb-5 text-base'>{currentTrack?.artist}</p>
-          <div className='flex gap-4'>
+          <div className='flex gap-1'>
             <button
-              className='btn btn-circle btn-lg btn-primary'
+              className='btn btn-circle btn-lg'
               onClick={() => {
                 player.previousTrack()
               }}
             >
-              <svg xmlns='http://www.w3.org/2000/svg' width='2em' height='2em' viewBox='0 0 24 24'>
-                <path
-                  fill='none'
-                  stroke='currentColor'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M19 20L9 12l10-8zM5 19V5'
-                ></path>
-              </svg>{' '}
+              <PrevIcon />
             </button>
-            <button
-              className='btn btn-circle btn-lg  btn-primary'
+            <button className='btn btn-circle btn-lg btn-outline'
               onClick={() => {
                 player.togglePlay()
               }}
             >
-              {isPaused ? (
-                <svg xmlns='http://www.w3.org/2000/svg' width='2em' height='2em' viewBox='0 0 24 24'>
-                  <path
-                    fill='none'
-                    stroke='currentColor'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='m6 3l14 9l-14 9z'
-                  ></path>
-                </svg>
-              ) : (
-                <svg xmlns='http://www.w3.org/2000/svg' width='2em' height='2em' viewBox='0 0 24 24'>
-                  <g fill='none' stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' strokeWidth={2}>
-                    <rect width={4} height={16} x={14} y={4} rx={1}></rect>
-                    <rect width={4} height={16} x={6} y={4} rx={1}></rect>
-                  </g>
-                </svg>
-              )}
+              {isPaused ? <PlayIcon /> : <PauseIcon />}
             </button>
-            <button
-              className='btn btn-circle btn-lg  btn-primary'
-              onClick={handleNext}
-            >
-              <svg xmlns='http://www.w3.org/2000/svg' width='2em' height='2em' viewBox='0 0 24 24'>
-                <path
-                  fill='none'
-                  stroke='currentColor'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='m5 4l10 8l-10 8zm14 1v14'
-                ></path>
-              </svg>
+            <button className='btn btn-lg btn-circle' onClick={handleNext}>
+              <NextIcon className='w-20 h-20' />
             </button>
           </div>
         </div>

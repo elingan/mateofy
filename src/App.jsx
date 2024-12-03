@@ -23,8 +23,10 @@ function App() {
 
   useEffect(() => {
     async function getToken() {
+      console.log('Getting token...')
       const response = await fetch('/api/auth/token')
       const token = await response.text()
+      console.log('Token:', token)
       setToken(token)
     }
     getToken()
@@ -32,15 +34,26 @@ function App() {
 
   useEffect(() => {
     async function getTracks() {
+      console.log('Getting tracks...')
       const response = await fetch(`/api/playlist`)
+      if (!response.ok) {
+        console.log(response.status)
+        console.log(document.cookie)
+
+        return
+      }
       const playlist = await response.json()
+      console.log('Playlist:', playlist)
       setPlaylist(playlist)
       setTracks(playlist.tracks)
     }
-    getTracks()
+    if (token) {
+      getTracks()
+    }
   }, [token])
 
   useEffect(() => {
+    if (track === undefined) return
     console.log('Track:', track)
   }, [track])
 

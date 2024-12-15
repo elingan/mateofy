@@ -7,10 +7,12 @@ import Navbar from './components/Navbar'
 import Playback from './components/Playback.jsx'
 
 function App() {
-  const [token, setToken] = useState('')
+  const [error, setError] = useState()
+  const [loading, setLoading] = useState(true)
+  const [token, setToken] = useState()
   const [playlist, setPlaylist] = useState({})
   const [tracks, setTracks] = useState([])
-  const [track, setTrack] = useState(undefined)
+  const [track, setTrack] = useState()
 
   // useEffect(() => {
   //   async function loading() {
@@ -22,38 +24,43 @@ function App() {
   // })
 
   useEffect(() => {
-    async function getToken() {
-      console.log('Getting token...')
-      const response = await fetch('/api/auth/token')
-      const token = await response.text()
-      console.log('Token:', token)
-      setToken(token)
-    }
-    getToken()
+    fetch('/api/auth/token')
+      .then((response) => {
+        if (!response.ok) {
+          // handle error
+          // throw new Error('Failed to fetch token')
+        }
+        return response.json()
+      })
+      .then((data) => {
+        setToken(data.accessToken)
+        setError(data.error)
+      })
   }, [])
 
   useEffect(() => {
-    async function getTracks() {
-      console.log('Getting tracks...')
-      const response = await fetch(`/api/playlist`)
-      if (!response.ok) {
-        console.log(response.status)
-        console.log(document.cookie)
-
-        return
-      }
-      const playlist = await response.json()
-      console.log('Playlist:', playlist)
-      setPlaylist(playlist)
-      setTracks(playlist.tracks)
+    if (!token) {
+      return
     }
-    if (token) {
-      getTracks()
-    }
+    fetch(`/api/playlist`)
+      .then((response) => {
+        if (!response.ok) {
+          // handle error
+          // throw new Error('Failed to fetch playlist')
+        }
+        return response.json()
+      })
+      .then((data) => {
+        setPlaylist(data.playlist)
+        setTracks(data.tracks)
+        setError(data.error)
+      })
   }, [token])
 
   useEffect(() => {
-    if (track === undefined) return
+    if (!track) {
+      return
+    }
     console.log('Track:', track)
   }, [track])
 
@@ -66,7 +73,7 @@ function App() {
   }
 
   function renderBody() {
-    if (token === '') {
+    if (!token) {
       return <Login />
     } else {
       return (

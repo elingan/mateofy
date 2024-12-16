@@ -1,7 +1,20 @@
+import { useState } from 'react'
+
 export default function Login() {
+  const [loading, setLoading] = useState(false)
+
+  function handleClick(event) {
+    setLoading(true)
+    event.preventDefault()
+    setTimeout(() => {
+      window.location.href = '/api/auth/login'
+    }, 1000)
+  }
+
   return (
     <div className='flex items-center justify-center h-screen'>
-      <a className='btn btn-primary' href='/api/auth/login'>
+      <button className='btn btn-primary' onClick={handleClick}>
+        {loading && <span className='loading loading-spinner'></span>}
         <span>
           <svg xmlns='http://www.w3.org/2000/svg' width='2em' height='2em' viewBox='0 0 256 256'>
             <path
@@ -11,7 +24,7 @@ export default function Login() {
           </svg>
         </span>
         Login
-      </a>
+      </button>
     </div>
   )
 }

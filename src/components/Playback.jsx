@@ -5,75 +5,74 @@ import NextIcon from './icons/next.jsx'
 import PlayIcon from './icons/play.jsx'
 import PauseIcon from './icons/pause.jsx'
 
-export default function Playback({ track, playlist, token }) {
+export default function Playback({ track, playlist }) {
   const [currentTrack, setCurrentTrack] = useState(undefined)
   const [player, setPlayer] = useState(undefined)
   const [isPaused, setPaused] = useState(false)
   const [isActive, setActive] = useState(false)
 
-  useEffect(() => {
-    const script = document.createElement('script')
-    script.src = 'https://sdk.scdn.co/spotify-player.js'
-    script.async = true
+  // useEffect(() => {
+  //   const script = document.createElement('script')
+  //   script.src = 'https://sdk.scdn.co/spotify-player.js'
+  //   script.async = true
 
-    document.body.appendChild(script)
+  //   document.body.appendChild(script)
 
-    window.onSpotifyWebPlaybackSDKReady = () => {
-      console.log('Spotify Web Playback SDK Ready')
+  //   window.onSpotifyWebPlaybackSDKReady = () => {
+  //     console.log('Spotify Web Playback SDK Ready')
 
-      const spotifyPlayer = new window.Spotify.Player({
-        name: 'Mateofy Web Playback',
-        getOAuthToken: (cb) => {
-          cb(token)
-        },
-        volume: 0.5
-      })
+  //     const spotifyPlayer = new window.Spotify.Player({
+  //       name: 'Mateofy Web Playback',
+  //       getOAuthToken: (cb) => {
+  //         cb(token)
+  //       },
+  //       volume: 0.5
+  //     })
 
-      setPlayer(spotifyPlayer)
+  //     setPlayer(spotifyPlayer)
 
-      spotifyPlayer.addListener('ready', async ({ device_id }) => {
-        console.log('Ready with Device ID', device_id)
-        // await fetch('/api/player', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json'
-        //   },
-        //   body: JSON.stringify({
-        //     deviceId: device_id,
-        //     playlist: playlist,
-        //     track: track.uri
-        //   })
-        // })
-      })
+  //     spotifyPlayer.addListener('ready', async ({ device_id }) => {
+  //       console.log('Ready with Device ID', device_id)
+  //       // await fetch('/api/player', {
+  //       //   method: 'POST',
+  //       //   headers: {
+  //       //     'Content-Type': 'application/json'
+  //       //   },
+  //       //   body: JSON.stringify({
+  //       //     deviceId: device_id,
+  //       //     playlist: playlist,
+  //       //     track: track.uri
+  //       //   })
+  //       // })
+  //     })
 
-      spotifyPlayer.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id)
-      })
+  //     spotifyPlayer.addListener('not_ready', ({ device_id }) => {
+  //       console.log('Device ID has gone offline', device_id)
+  //     })
 
-      spotifyPlayer.addListener('player_state_changed', (state) => {
-        if (!state) {
-          return
-        }
+  //     spotifyPlayer.addListener('player_state_changed', (state) => {
+  //       if (!state) {
+  //         return
+  //       }
 
-        console.log('Player State Changed', state)
+  //       console.log('Player State Changed', state)
 
-        setCurrentTrack(state.track_window.current_track)
-        // setPaused(state.paused)
+  //       setCurrentTrack(state.track_window.current_track)
+  //       // setPaused(state.paused)
 
-        spotifyPlayer?.getCurrentState().then((state) => {
-          !state ? setActive(false) : setActive(true)
-        })
-      })
+  //       spotifyPlayer?.getCurrentState().then((state) => {
+  //         !state ? setActive(false) : setActive(true)
+  //       })
+  //     })
 
-      spotifyPlayer.connect()
-    }
-  }, [])
+  //     spotifyPlayer.connect()
+  //   }
+  // }, [])
 
   function handleNext() {
     console.log('Next Track')
-    console.log(player)
-
-    player.nextTrack()
+    // console.log(player)
+    // player.nextTrack()
   }
 
   return (

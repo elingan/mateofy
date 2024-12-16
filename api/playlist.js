@@ -4,7 +4,7 @@ export default async function handler(request, response) {
     return response.status(401).redirect('/')
   }
 
-  const playlistId = process.env.SPOTIFY_PLAYLIST_ID
+  const playlistId = request.query.id 
 
   try {
     const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
@@ -15,7 +15,7 @@ export default async function handler(request, response) {
     if (!res.ok) {
       return response.status(res.status).json({ error: 'Failed to fetch playlist' })
     }
-    
+
     const data = await res.json()
 
     let playlist = {
